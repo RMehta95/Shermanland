@@ -8,11 +8,15 @@ var queue; // Loading queue
 var main; // Main background on loading screen
 var startB; // Start button in main menu
 
-var selectPlayersB; // Button containing options to select 1-4 players. (Might need to make separate vars for each button)
+var titleView; // Loading page
+var selectPlayersView; // Screen to select number of players
+var playbutton1;
+var playbutton2;
+var playbutton3;
+var playbutton4;
+var selectPlayers; // Container
 
 var bg; // Background graphic
-
-// var titleView = new createjs.Container(); // Loading page
 
 // Game pieces
 var player1;
@@ -43,8 +47,12 @@ function init() {
     			{id:"main", src:"titleview.jpg"},
     			{id:"startB", src:"startbutton.png"},
     			{id:"selectPlayersView", src:"selectplayersview.jpg"},
-    			{id:"player1", src:"willie.png"},
-                {id:"bgImg", src:"shermanlandboard.jpg"}
+                {id:"playbutton1", src:"playbutton1.png"},
+                {id:"playbutton2", src:"playbutton2.png"},
+                {id:"playbutton3", src:"playbutton3.png"},
+                {id:"playbutton4", src:"playbutton4.png"},
+                {id:"bgImg", src:"shermanlandboard.jpg"},
+                {id:"player1", src:"willie.png"}
     			// , {src:"Morty.jpg", id:"player2"},
     			// {src:"Morty.jpg", id:"player3"},
     			// {src:"Morty.jpg", id:"player4"},
@@ -62,30 +70,47 @@ function init() {
 }
 
 function handleComplete(event) {
-    // var main = ;
-    //    startB = queue.getResult("startB");
-	// titleView.addChild(main);
-    // document.body.appendChild(main);
-	// stage.addChild(queue.getResult("main"));
-	// stage.update();
-
-    // Button listeners
-    // startB.onPress = tweenTitleView;
-    var bitmap = new createjs.Bitmap(queue.getResult("main"));
-    stage.addChild(bitmap);
-    //Update stage will render next frame
+    var main = new createjs.Bitmap(queue.getResult("main"));
+    var startB = new createjs.Bitmap(queue.getResult("startB"));
+    startB.y = 100;
+    startB.addEventListener("click",requestPlayers);
+    
+    var titleView = new createjs.Container();
+    titleView.addChild(main, startB);
+	
+    
+    stage.addChild(titleView);
     stage.update();
 }
 
+function requestPlayers(event) {
+    selectPlayersView = new createjs.Bitmap(queue.getResult("selectPlayersView"));
+    playbutton1 = new createjs.Bitmap(queue.getResult("playbutton1"));
+    playbutton2 = new createjs.Bitmap(queue.getResult("playbutton2"));
+    playbutton3 = new createjs.Bitmap(queue.getResult("playbutton3"));
+    playbutton4 = new createjs.Bitmap(queue.getResult("playbutton4"));
+    
+    selectPlayers = new createjs.Container();
+    selectPlayers.addChild(selectPlayersView, playbutton1, playbutton2, playbutton3, playbutton4);
 
-// function handleClick(event){
-// 	bg = new createjs.Bitmap(queue.getResult("bgImg"));
-//     bg.scaleX = 0.5;
-//     bg.scaleY = 0.5;
-//     stage.removeChild(titleView);
-//     stage.addChild(bg);
-//     stage.update();
-// }
+    stage.removeChild(titleView);
+    stage.addChild(selectPlayers);
+    stage.update();
+
+    playbutton1.addEventListener("click", loadBoard);
+    playbutton2.addEventListener("click", loadBoard);
+    playbutton3.addEventListener("click", loadBoard);
+    playbutton4.addEventListener("click", loadBoard);
+}
+
+function loadBoard(event) {
+    bg = new createjs.Bitmap(queue.getResult("bgImg"));
+    bg.scaleX = 0.5;
+    bg.scaleY = 0.5;
+    stage.removeChild(selectPlayers);
+    stage.addChild(bg);
+    stage.update();
+}
 
 function handleTick(event) {
     stage.update();
