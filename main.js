@@ -17,6 +17,7 @@ var playbutton4;
 var selectPlayers; // Container
 
 var bg; // Background graphic
+var board; // Container
 
 // Game pieces
 var player1;
@@ -42,6 +43,7 @@ function init() {
 	//false allows images to load locally
 
     queue.installPlugin(createjs.Sound);
+    createjs.MotionGuidePlugin.install();
     queue.on("complete", handleComplete, this);
     queue.loadManifest([
     			{id:"main", src:"titleview.jpg"},
@@ -107,8 +109,25 @@ function loadBoard(event) {
     bg = new createjs.Bitmap(queue.getResult("bgImg"));
     bg.scaleX = 0.5;
     bg.scaleY = 0.5;
+
+    player1 = new createjs.Bitmap(queue.getResult("player1"));
+    player1.scaleX = 0.5;
+    player1.scaleY = 0.5;
+    player1.y = 500;
+
+    board = new createjs.Container();
+    board.addChild(bg, player1);
+    
     stage.removeChild(selectPlayers);
-    stage.addChild(bg);
+    stage.addChild(board);
+    stage.update();
+
+    createjs.Tween.get(player1)
+        .wait(500)
+        .to({x:400, y:300}, 1000, createjs.Ease.elasticOut);
+}
+
+function firstMove(event) {
     stage.update();
 }
 
