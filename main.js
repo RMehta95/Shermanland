@@ -35,6 +35,10 @@ var shot;
 var wine;
 var ice;
 
+var colorArray;
+var count;
+// var data;
+
 function init() {
     canvas = document.getElementById("canvas");
 
@@ -64,11 +68,6 @@ function init() {
     			// {src:"blank", id:"ice"}
     		]);
 
-    createjs.Ticker.addEventListener("tick", handleTick);
-    createjs.Ticker.setFPS(60);
-    //move this to later spot
-
-
 }
 
 function handleComplete(event) {
@@ -80,7 +79,6 @@ function handleComplete(event) {
     var titleView = new createjs.Container();
     titleView.addChild(main, startB);
 	
-    
     stage.addChild(titleView);
     stage.update();
 }
@@ -120,17 +118,27 @@ function loadBoard(event) {
     
     stage.removeChild(selectPlayers);
     stage.addChild(board);
-    stage.update();
-
     createjs.Tween.get(player1)
         .wait(500)
-        .to({x:400, y:300}, 1000, createjs.Ease.elasticOut);
+        .to({x:335, y:70}, 1000, createjs.Ease.elasticOut);
+
+    var square = new createjs.Shape();
+    square.graphics.beginFill("#fa7a5f").inject(setColor).drawRoundRect(300, 50, 200, 200, 20);
+    // square.addEventListener("mouseover",animateColors);
+    board.addChildAt(square,1);
+    createjs.Ticker.addEventListener("tick", handleTick);
+    createjs.Ticker.setFPS(10);
+    stage.update();
 }
 
-function firstMove(event) {
-    stage.update();
+function setColor(color) {
+    colorArray = ["#a7a5f","#531dd","#f0fc52","#143ef","#ffd85f", "#2cad84"];
+    this.fillStyle = colorArray[Math.round(Math.random()*6)];
 }
 
 function handleTick(event) {
-    stage.update();
+    if(createjs.Ticker.getTime(true) < Math.random()*5000) {
+        // Ticker.setPaused(true);
+        stage.update();
+    }
 }
