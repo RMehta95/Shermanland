@@ -50,7 +50,7 @@ function init() {
     createjs.MotionGuidePlugin.install();
     queue.on("complete", handleComplete, this);
     queue.loadManifest([
-    			{id:"main", src:"titleview.jpg"},
+    			{id:"main", src:"titleview2.jpg"},
     			{id:"startB", src:"startbutton.png"},
     			{id:"selectPlayersView", src:"selectplayersview.jpg"},
                 {id:"playbutton1", src:"playbutton1.png"},
@@ -58,7 +58,7 @@ function init() {
                 {id:"playbutton3", src:"playbutton3.png"},
                 {id:"playbutton4", src:"playbutton4.png"},
                 {id:"bgImg", src:"shermanlandboard.jpg"},
-                {id:"player1", src:"willie.png"}
+                {id:"player1", src:"willie3.png"}
     			// , {src:"Morty.jpg", id:"player2"},
     			// {src:"Morty.jpg", id:"player3"},
     			// {src:"Morty.jpg", id:"player4"},
@@ -74,7 +74,8 @@ function handleComplete(event) {
     var main = new createjs.Bitmap(queue.getResult("main"));
     var startB = new createjs.Bitmap(queue.getResult("startB"));
     startB.y = 100;
-    startB.addEventListener("click",requestPlayers);
+    startB.x = 100;
+    startB.addEventListener("click",loadBoard);
     
     var titleView = new createjs.Container();
     titleView.addChild(main, startB);
@@ -83,25 +84,25 @@ function handleComplete(event) {
     stage.update();
 }
 
-function requestPlayers(event) {
-    selectPlayersView = new createjs.Bitmap(queue.getResult("selectPlayersView"));
-    playbutton1 = new createjs.Bitmap(queue.getResult("playbutton1"));
-    playbutton2 = new createjs.Bitmap(queue.getResult("playbutton2"));
-    playbutton3 = new createjs.Bitmap(queue.getResult("playbutton3"));
-    playbutton4 = new createjs.Bitmap(queue.getResult("playbutton4"));
+// function requestPlayers(event) {
+//     selectPlayersView = new createjs.Bitmap(queue.getResult("selectPlayersView"));
+//     playbutton1 = new createjs.Bitmap(queue.getResult("playbutton1"));
+//     playbutton2 = new createjs.Bitmap(queue.getResult("playbutton2"));
+//     playbutton3 = new createjs.Bitmap(queue.getResult("playbutton3"));
+//     playbutton4 = new createjs.Bitmap(queue.getResult("playbutton4"));
     
-    selectPlayers = new createjs.Container();
-    selectPlayers.addChild(selectPlayersView, playbutton1, playbutton2, playbutton3, playbutton4);
+//     selectPlayers = new createjs.Container();
+//     selectPlayers.addChild(selectPlayersView, playbutton1, playbutton2, playbutton3, playbutton4);
 
-    stage.removeChild(titleView);
-    stage.addChild(selectPlayers);
-    stage.update();
+//     stage.removeChild(titleView);
+//     stage.addChild(selectPlayers);
+//     stage.update();
 
-    playbutton1.addEventListener("click", loadBoard);
-    playbutton2.addEventListener("click", loadBoard);
-    playbutton3.addEventListener("click", loadBoard);
-    playbutton4.addEventListener("click", loadBoard);
-}
+//     playbutton1.addEventListener("click", loadBoard);
+//     playbutton2.addEventListener("click", loadBoard);
+//     playbutton3.addEventListener("click", loadBoard);
+//     playbutton4.addEventListener("click", loadBoard);
+// }
 
 function loadBoard(event) {
     bg = new createjs.Bitmap(queue.getResult("bgImg"));
@@ -109,25 +110,26 @@ function loadBoard(event) {
     bg.scaleY = 0.5;
 
     player1 = new createjs.Bitmap(queue.getResult("player1"));
-    player1.scaleX = 0.5;
-    player1.scaleY = 0.5;
+    player1.scaleX = 0.25;
+    player1.scaleY = 0.25;
     player1.y = 500;
 
     board = new createjs.Container();
     board.addChild(bg, player1);
     
-    stage.removeChild(selectPlayers);
+    stage.removeAllChildren(titleView);
     stage.addChild(board);
     createjs.Tween.get(player1)
         .wait(500)
-        .to({x:335, y:70}, 1000, createjs.Ease.elasticOut);
+        .to({x:100, y:500}, 1000, createjs.Ease.elasticIn);
 
     var square = new createjs.Shape();
-    square.graphics.beginFill("#fa7a5f").inject(setColor).drawRoundRect(300, 50, 200, 200, 20);
+    square.graphics.beginFill("#fa7a5f").inject(setColor).drawRoundRect(850, 50, 100, 100, 20);
     // square.addEventListener("mouseover",animateColors);
+    // square.x = 500;
+
     board.addChildAt(square,1);
     createjs.Ticker.addEventListener("tick", handleTick);
-    createjs.Ticker.setFPS(10);
     stage.update();
 }
 
@@ -137,8 +139,9 @@ function setColor(color) {
 }
 
 function handleTick(event) {
-    if(createjs.Ticker.getTime(true) < Math.random()*5000) {
+    if(createjs.Ticker.getTime(true) < 4000) {
         // Ticker.setPaused(true);
+        createjs.Ticker.setFPS(10);
         stage.update();
     }
 }
