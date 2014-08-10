@@ -7,155 +7,18 @@ var queue; // Loading queue
 
 var main; // Main background on loading screen
 var startB; // Start button in main menu
+var credits; // Text
 
 var titleView; // Loading page
 
 var selectPlayersView; // Screen to select number of players
-var playbutton1;
-var playbutton2;
-var playbutton3;
-var playbutton4;
+var playbutton1, playbutton2, playbutton3, playbutton4;
 var selectPlayers; // Container
 
 var bg; // Background graphic
 var board; // Container
-var pointArray; // Array of all spaces on track
-
-// Game pieces
-var player1;
-var player2;
-var player3;
-var player4;
-
-// Score keeping
-var drink;
-var finish;
-
-// Drinks
-var beer;
-var shot;
-var wine;
-var ice;
-
-var colorArray;
-var count;
-// var data;
-
-function init() {
-    canvas = document.getElementById("canvas");
-
-    stage = new createjs.Stage("canvas");
-    queue = new createjs.LoadQueue(false);
-	//false allows images to load locally
-
-    queue.installPlugin(createjs.Sound);
-    createjs.MotionGuidePlugin.install();
-    queue.on("complete", handleComplete, this);
-    queue.loadManifest([
-    			{id:"main", src:"titleview2.jpg"},
-    			{id:"startB", src:"startbutton.png"},
-        //         {id:"selectPlayersView", src:"selectplayersview.jpg"},
-       //          {id:"playbutton1", src:"playbutton1.png"},
-       //          {id:"playbutton2", src:"playbutton2.png"},
-       //          {id:"playbutton3", src:"playbutton3.png"},
-       //          {id:"playbutton4", src:"playbutton4.png"},
-                {id:"bgImg", src:"shermanlandboard.jpg"},
-                {id:"player1", src:"willie3.png"}
-    			// , {src:"Morty.jpg", id:"player2"},
-    			// {src:"Morty.jpg", id:"player3"},
-    			// {src:"Morty.jpg", id:"player4"},
-    			// {src:"blank", id:"beer"},
-    			// {src:"blank", id:"shot"},
-    			// {src:"blank", id:"wine"},
-    			// {src:"blank", id:"ice"}
-    		]);
-
-}
-
-
-
-function handleComplete(event) {
-    var main = new createjs.Bitmap(queue.getResult("main"));
-    var startB = new createjs.Bitmap(queue.getResult("startB"));
-    startB.y = 100;
-    startB.x = 100;
-    startB.addEventListener("click",loadBoard);
-    
-    var titleView = new createjs.Container();
-    titleView.addChild(main, startB);
-	
-    stage.addChild(titleView);
-    stage.update();
-}
-
-// function requestPlayers(event) {
-//     selectPlayersView = new createjs.Bitmap(queue.getResult("selectPlayersView"));
-//     playbutton1 = new createjs.Bitmap(queue.getResult("playbutton1"));
-//     playbutton2 = new createjs.Bitmap(queue.getResult("playbutton2"));
-//     playbutton3 = new createjs.Bitmap(queue.getResult("playbutton3"));
-//     playbutton4 = new createjs.Bitmap(queue.getResult("playbutton4"));
-    
-//     selectPlayers = new createjs.Container();
-//     selectPlayers.addChild(selectPlayersView, playbutton1, playbutton2, playbutton3, playbutton4);
-
-//     stage.removeChild(titleView);
-//     stage.addChild(selectPlayers);
-//     stage.update();
-
-//     playbutton1.addEventListener("click", loadBoard);
-//     playbutton2.addEventListener("click", loadBoard);
-//     playbutton3.addEventListener("click", loadBoard);
-//     playbutton4.addEventListener("click", loadBoard);
-// }
-
-function loadBoard(event) {
-    bg = new createjs.Bitmap(queue.getResult("bgImg"));
-    bg.scaleX = 0.5;
-    bg.scaleY = 0.5;
-
-    player1 = new createjs.Bitmap(queue.getResult("player1"));
-    player1.scaleX = 0.25;
-    player1.scaleY = 0.25;
-    player1.y = 500;
-
-    board = new createjs.Container();
-    board.addChild(bg, player1);
-    
-    stage.removeAllChildren(titleView);
-    stage.addChild(board);
-    createjs.Tween.get(player1)
-        .wait(500)
-        .to(pointArray[0], 1000, createjs.Ease.elasticIn);
-
-    var square = new createjs.Shape();
-    square.graphics.beginFill("#fa7a5f").inject(setColor).drawRoundRect(850, 50, 100, 100, 20);
-    // square.addEventListener("mouseover",animateColors);
-    // square.x = 500;
-
-    board.addChildAt(square,1);
-    createjs.Ticker.addEventListener("tick", handleTick);
-    stage.update();
-}
-
-
-function setColor(color) {
-    colorArray = ["#a7a5f","#531dd","#f0fc52","#143ef","#ffd85f", "#2cad84"];
-    this.fillStyle = colorArray[Math.round(Math.random()*6)];
-}
-
-function handleTick(event) {
-    if(createjs.Ticker.getTime(true) < 4000) {
-        // Ticker.setPaused(true);
-        createjs.Ticker.setFPS(10);
-        stage.update();
-    }
-}
-
-
-
-
-
-pointArray = [{x:70, y:500},
+var buttonListener; // Button listener
+var pointArray = [{x:70, y:500},
     {x:120, y:500},
     {x:150, y:500},
     {x:178, y:488},
@@ -290,5 +153,137 @@ pointArray = [{x:70, y:500},
     {x:222, y:18},
     {x:248, y:32},
     {x:276, y:42},
-    {x:310, y:48}];
+    {x:310, y:48}]; // Array of all spaces on track
 
+// Game pieces
+var player1, player2, player3, player4;
+
+// Score keeping
+var drink;
+var finish;
+
+// Drinks
+var beer;
+var shot;
+var wine;
+var ice;
+
+var colorArray;
+var count;
+// var data;
+
+function init() {
+    canvas = document.getElementById("canvas");
+
+    stage = new createjs.Stage("canvas");
+    queue = new createjs.LoadQueue(false);
+	//false allows images to load locally
+
+    queue.installPlugin(createjs.Sound);
+    createjs.MotionGuidePlugin.install();
+    queue.on("complete", handleComplete, this);
+    queue.loadManifest([
+    			{id:"main", src:"titleview2.jpg"},
+    			{id:"startB", src:"startbutton.png"},
+                {id:"selectPlayersView", src:"selectplayersview.jpg"},
+                {id:"playbutton1", src:"playbutton1.png"},
+                {id:"playbutton2", src:"playbutton2.png"},
+                {id:"playbutton3", src:"playbutton3.png"},
+                {id:"playbutton4", src:"playbutton4.png"},
+                {id:"bgImg", src:"shermanlandboard.jpg"},
+                {id:"player1", src:"willie.png"},
+    			{id:"pushbutton", src:"pushbutton.png"}
+    		]);
+
+}
+
+function handleComplete(event) {
+    main = new createjs.Bitmap(queue.getResult("main"));
+    startB = new createjs.Bitmap(queue.getResult("startB"));
+    startB.y = 100;
+    startB.x = 100;
+    startB.addEventListener("click",loadBoard);
+    credits = new createjs.Text("Created by Rohan/ISBE Tech. ©2014", "14px Arial", "#fff");
+    credits.x = 750;
+    credits.y = 550;
+
+    titleView = new createjs.Container();
+    titleView.addChild(main, startB, credits);
+	
+    stage.addChild(titleView);
+
+    stage.update();
+}
+
+// function requestPlayers(event) {
+//     selectPlayersView = new createjs.Bitmap(queue.getResult("selectPlayersView"));
+//     playbutton1 = new createjs.Bitmap(queue.getResult("playbutton1"));
+//     playbutton2 = new createjs.Bitmap(queue.getResult("playbutton2"));
+//     playbutton3 = new createjs.Bitmap(queue.getResult("playbutton3"));
+//     playbutton4 = new createjs.Bitmap(queue.getResult("playbutton4"));
+    
+//     selectPlayers = new createjs.Container();
+//     selectPlayers.addChild(selectPlayersView, playbutton1, playbutton2, playbutton3, playbutton4);
+
+//     stage.removeChild(titleView);
+//     stage.addChild(selectPlayers);
+//     stage.update();
+
+//     playbutton1.addEventListener("click", loadBoard);
+//     playbutton2.addEventListener("click", loadBoard);
+//     playbutton3.addEventListener("click", loadBoard);
+//     playbutton4.addEventListener("click", loadBoard);
+// }
+
+function loadBoard(event) {
+    bg = new createjs.Bitmap(queue.getResult("bgImg"));
+    bg.scaleX = 0.5;
+    bg.scaleY = 0.5;
+
+    player1 = new createjs.Bitmap(queue.getResult("player1"));
+    player1.scaleX = 0.25;
+    player1.scaleY = 0.25;
+    player1.y = 500;
+    player1.shadow = new createjs.Shadow("#000000", 5, 5, 5);
+
+    pushbutton = new createjs.Bitmap(queue.getResult("pushbutton"));
+    pushbutton.scaleX = 0.4;
+    pushbutton.scaleY = 0.4;
+    pushbutton.x = 840;
+    pushbutton.y = 300;
+    pushbutton.addEventListener("click",pushButton);
+
+    board = new createjs.Container();
+    board.addChild(bg, player1, pushbutton);
+    
+    stage.removeAllChildren(titleView);
+    stage.addChild(board);
+    createjs.Tween.get(player1)
+        .wait(500)
+        .to(pointArray[0], 1000, createjs.Ease.elasticIn);
+
+    createjs.Ticker.on("tick", handleTick);
+    createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
+    createjs.Ticker.setFPS(10);
+
+    stage.update();
+}
+
+
+function handleTick(event) {
+    stage.update();
+}
+
+function animateColor(event) {
+    colorArray = ["#a7a5f","#531dd","#f0fc52","#143ef","#ffd85f", "#2cad84"];
+    this.fillStyle = colorArray[Math.round(Math.random()*6)];
+    // add in a pause animate after 4 seconds thing here
+}
+
+
+function pushButton(event) {
+
+    var square = new createjs.Shape();
+    square.graphics.beginFill("#fa7a5f").inject(animateColor).drawRoundRect(850, 50, 100, 100, 20);
+    board.addChildAt(square,1);
+}
