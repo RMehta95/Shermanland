@@ -17,6 +17,7 @@ var selectPlayers; // Container
 
 var bg; // Background graphic
 var board; // Container
+var square; // Color shape, rounded square
 var buttonListener; // Button listener
 var pointArray = [{x:70, y:500},
     {x:120, y:500},
@@ -84,7 +85,7 @@ var pointArray = [{x:70, y:500},
     {x:45, y:374},
     {x:22, y:355},
     {x:10, y:327},
-    {x:08, y:297},
+    {x:8, y:297},
     {x:24, y:272},
     {x:50, y:264},
     {x:80, y:268},
@@ -167,10 +168,10 @@ var beer;
 var shot;
 var wine;
 var ice;
+var count=0;
 
-var colorArray;
-var count;
-// var data;
+var colorArray = ["#FE7B62","#CB2DD3","#F1FD66","#004CE8","#FFD068", "#02A97E"];
+var wheel;
 
 function init() {
     canvas = document.getElementById("canvas");
@@ -203,7 +204,7 @@ function handleComplete(event) {
     startB.y = 100;
     startB.x = 100;
     startB.addEventListener("click",loadBoard);
-    credits = new createjs.Text("Created by Rohan/ISBE Tech. ©2014", "14px Arial", "#fff");
+    credits = new createjs.Text("Created by Rohan Mehta ©2014", "14px Arial", "#fff");
     credits.x = 750;
     credits.y = 550;
 
@@ -251,39 +252,54 @@ function loadBoard(event) {
     pushbutton.scaleY = 0.4;
     pushbutton.x = 840;
     pushbutton.y = 300;
-    pushbutton.addEventListener("click",pushButton);
+    pushbutton.on("click",pushButton);
 
+    square = new createjs.Shape();
+    square.graphics.beginFill("#000").drawRoundRect(850, 50, 100, 100, 20);
+
+   
     board = new createjs.Container();
-    board.addChild(bg, player1, pushbutton);
+    board.addChild(bg, player1, pushbutton, square);
     
     stage.removeAllChildren(titleView);
     stage.addChild(board);
-    createjs.Tween.get(player1)
-        .wait(500)
-        .to(pointArray[0], 1000, createjs.Ease.elasticIn);
 
-    createjs.Ticker.on("tick", handleTick);
+
+    createjs.Ticker.addEventListener("tick", handleTick);
     createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
-    createjs.Ticker.setFPS(10);
+    createjs.Ticker.setInterval(100);
+    createjs.Tween.get(player1)
+        .to(pointArray[0], 1000, createjs.Ease.elasticIn);
+    // createjs.Ticker.setPaused(true);
 
-    stage.update();
+
 }
-
 
 function handleTick(event) {
     stage.update();
 }
 
-function animateColor(event) {
-    colorArray = ["#a7a5f","#531dd","#f0fc52","#143ef","#ffd85f", "#2cad84"];
-    this.fillStyle = colorArray[Math.round(Math.random()*6)];
-    // add in a pause animate after 4 seconds thing here
-}
-
-
 function pushButton(event) {
 
-    var square = new createjs.Shape();
-    square.graphics.beginFill("#fa7a5f").inject(animateColor).drawRoundRect(850, 50, 100, 100, 20);
-    board.addChildAt(square,1);
+    // square.append(new Graphics.beginFill(colorArray[1]));
+    // stage.update();
+   
+
+    // if (createjs.Ticker.getPaused(true)) {
+    //     createjs.Ticker.setPaused(false);
+    square.graphics.inject(animateColor);
+    // }
+
+}
+
+function animateColor(event) {
+    
+    // wheel = new createjs.MovieClip();
+    // stage.addChild(wheel);
+    // for (var i=0; i<colorArray.length; i++) {
+    //     this.fillStyle = colorArray[i];
+    // }
+    
+    this.fillStyle = colorArray[parseInt(Math.random()*6)];
+
 }
