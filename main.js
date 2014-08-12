@@ -171,7 +171,7 @@ var ice;
 var count=0;
 
 var colorArray = ["#FE7B62","#CB2DD3","#F1FD66","#004CE8","#FFD068", "#02A97E"];
-var wheel;
+var displayColor, wheel;
 
 function init() {
     canvas = document.getElementById("canvas");
@@ -237,6 +237,10 @@ function handleComplete(event) {
 // }
 
 function loadBoard(event) {
+    createjs.Ticker.addEventListener("tick", handleTick);
+    createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
+    createjs.Ticker.setFPS(10);
+
     bg = new createjs.Bitmap(queue.getResult("bgImg"));
     bg.scaleX = 0.5;
     bg.scaleY = 0.5;
@@ -257,49 +261,38 @@ function loadBoard(event) {
     square = new createjs.Shape();
     square.graphics.beginFill("#000").drawRoundRect(850, 50, 100, 100, 20);
 
-   
     board = new createjs.Container();
     board.addChild(bg, player1, pushbutton, square);
     
     stage.removeAllChildren(titleView);
     stage.addChild(board);
 
-
-    createjs.Ticker.addEventListener("tick", handleTick);
-    createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
-    createjs.Ticker.setInterval(100);
     createjs.Tween.get(player1)
-        .to(pointArray[0], 1000, createjs.Ease.elasticIn);
-    // createjs.Ticker.setPaused(true);
-
-
+        .to(pointArray[0], 1000, createjs.Ease.elasticIn)
+        // .call(pauseTicker);
 }
 
 function handleTick(event) {
     stage.update();
 }
 
+function pauseTicker(event) {
+    createjs.Ticker.setPaused(true);
+}
+
 function pushButton(event) {
 
-    // square.append(new Graphics.beginFill(colorArray[1]));
-    // stage.update();
-   
-
-    // if (createjs.Ticker.getPaused(true)) {
-    //     createjs.Ticker.setPaused(false);
     square.graphics.inject(animateColor);
-    // }
 
 }
 
 function animateColor(event) {
     
-    // wheel = new createjs.MovieClip();
-    // stage.addChild(wheel);
-    // for (var i=0; i<colorArray.length; i++) {
-    //     this.fillStyle = colorArray[i];
+    // while (createjs.Ticker.getTime(true)<5000) {
+    //     this.fillStyle = colorArray[parseInt(Math.random()*6)];
     // }
-    
     this.fillStyle = colorArray[parseInt(Math.random()*6)];
 
+    // createjs.Ticker.setPaused(true); 
+   
 }
