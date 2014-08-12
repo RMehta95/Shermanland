@@ -241,6 +241,9 @@ function handleComplete(event) {
 
 function loadBoard() {
 
+    createjs.Ticker.addEventListener("tick", handleTick);
+    createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
+
     bg = new createjs.Bitmap(queue.getResult("bgImg"));
     bg.scaleX = 0.5;
     bg.scaleY = 0.5;
@@ -291,8 +294,6 @@ function pushButton() {
 
     displayColor = setInterval(animateColor, 200);
 
-    // createjs.Ticker.addEventListener("tick", animateColor);
-    // createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
     }
 
 function animateColor() {
