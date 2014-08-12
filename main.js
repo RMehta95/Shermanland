@@ -168,10 +168,12 @@ var beer;
 var shot;
 var wine;
 var ice;
-var count=0;
 
 var colorArray = ["#FE7B62","#CB2DD3","#F1FD66","#004CE8","#FFD068", "#02A97E"];
-var displayColor, wheel;
+var color1, color2, color3, color4, color5, color6, color7, color8, color9, color10;
+var displayColor, wheel, data;
+var counter = 0;
+
 
 function init() {
     canvas = document.getElementById("canvas");
@@ -179,6 +181,7 @@ function init() {
     stage = new createjs.Stage("canvas");
     queue = new createjs.LoadQueue(false);
 	//false allows images to load locally
+    createjs.Touch.enable(stage);
 
     queue.installPlugin(createjs.Sound);
     createjs.MotionGuidePlugin.install();
@@ -236,10 +239,7 @@ function handleComplete(event) {
 //     playbutton4.addEventListener("click", loadBoard);
 // }
 
-function loadBoard(event) {
-    createjs.Ticker.addEventListener("tick", handleTick);
-    createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
-    createjs.Ticker.setFPS(10);
+function loadBoard() {
 
     bg = new createjs.Bitmap(queue.getResult("bgImg"));
     bg.scaleX = 0.5;
@@ -248,6 +248,7 @@ function loadBoard(event) {
     player1 = new createjs.Bitmap(queue.getResult("player1"));
     player1.scaleX = 0.25;
     player1.scaleY = 0.25;
+    player1.x = 70;
     player1.y = 500;
     player1.shadow = new createjs.Shadow("#000000", 5, 5, 5);
 
@@ -267,32 +268,42 @@ function loadBoard(event) {
     stage.removeAllChildren(titleView);
     stage.addChild(board);
 
-    createjs.Tween.get(player1)
-        .to(pointArray[0], 1000, createjs.Ease.elasticIn)
+    // createjs.Tween.get(player1)
+    //     .to(pointArray[0], 1000, createjs.Ease.elasticIn)
         // .call(pauseTicker);
-}
 
-function handleTick(event) {
     stage.update();
 }
 
-function pauseTicker(event) {
+function handleTick() {
+    stage.update();
+}
+
+function pauseTicker() {
     createjs.Ticker.setPaused(true);
 }
 
-function pushButton(event) {
-
-    square.graphics.inject(animateColor);
-
+function startTicker() {
+    createjs.Ticker.setPaused(false);
 }
 
-function animateColor(event) {
-    
-    // while (createjs.Ticker.getTime(true)<5000) {
-    //     this.fillStyle = colorArray[parseInt(Math.random()*6)];
-    // }
-    this.fillStyle = colorArray[parseInt(Math.random()*6)];
+function pushButton() {
 
-    // createjs.Ticker.setPaused(true); 
-   
+    displayColor = setInterval(animateColor, 200);
+
+    // createjs.Ticker.addEventListener("tick", animateColor);
+    // createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
+    }
+
+function animateColor() {
+    
+    counter++;
+    if (counter===20){
+        clearInterval(displayColor);
+        counter=0;
+    }
+    square.graphics.clear();
+    square.graphics.beginFill(colorArray[parseInt(Math.random()*6)]).drawRoundRect(850, 50, 100, 100, 20);
+    stage.update();
+
 }
