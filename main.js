@@ -19,6 +19,8 @@ var bg; // Background graphic
 var board; // Container
 var square; // Color shape, rounded square
 var buttonListener; // Button listener
+
+// Array of all spaces on track
 var pointArray = [{x:70, y:500},
     {x:120, y:500},
     {x:150, y:500},
@@ -154,7 +156,15 @@ var pointArray = [{x:70, y:500},
     {x:222, y:18},
     {x:248, y:32},
     {x:276, y:42},
-    {x:310, y:48}]; // Array of all spaces on track
+    {x:310, y:48}]; 
+// Listing of pieces by color
+var orange = [pointArray[1],pointArray[7],pointArray[14],pointArray[21],pointArray[27],pointArray[33],pointArray[39],pointArray[46],pointArray[52],pointArray[58],pointArray[64],pointArray[71],pointArray[77],pointArray[83],pointArray[89],pointArray[96],pointArray[103],pointArray[109],pointArray[115],pointArray[121],pointArray[127],pointArray[133]];
+var purple = [pointArray[2],pointArray[8],pointArray[15],pointArray[22],pointArray[28],pointArray[34],pointArray[49],pointArray[47],pointArray[53],pointArray[59],pointArray[65],pointArray[72],pointArray[78],pointArray[84],pointArray[90],pointArray[97],pointArray[104],pointArray[110],pointArray[116],pointArray[122],pointArray[128]];
+var pink = [pointArray[9],pointArray[20],pointArray[42],pointArray[69],pointArray[92],pointArray[102]];
+var yellow = [pointArray[3],pointArray[10],pointArray[16],pointArray[23],pointArray[29],pointArray[35],pointArray[41],pointArray[48],pointArray[54],pointArray[60],pointArray[66],pointArray[73],pointArray[79],pointArray[85],pointArray[91],pointArray[98],pointArray[105],pointArray[111],pointArray[117],pointArray[123],pointArray[129]];
+var blue = [pointArray[4],pointArray[11],pointArray[17],pointArray[24],pointArray[30],pointArray[36],pointArray[43],pointArray[49],pointArray[55],pointArray[61],pointArray[67],pointArray[74],pointArray[80],pointArray[86],pointArray[93],pointArray[99],pointArray[106],pointArray[113],pointArray[119],pointArray[124],pointArray[130]];
+var gold = [pointArray[5],pointArray[12],pointArray[18],pointArray[25],pointArray[31],pointArray[37],pointArray[44],pointArray[50],pointArray[56],pointArray[62],pointArray[68],pointArray[75],pointArray[81],pointArray[87],pointArray[94],pointArray[100],pointArray[107],pointArray[114],pointArray[120],pointArray[125],pointArray[131]];
+var turquoise = [pointArray[6],pointArray[13],pointArray[19],pointArray[26],pointArray[32],pointArray[38],pointArray[45],pointArray[51],pointArray[57],pointArray[63],pointArray[70],pointArray[76],pointArray[82],pointArray[88],pointArray[95],pointArray[101],pointArray[108],pointArray[115],pointArray[121],pointArray[126],pointArray[132]];
 
 // Game pieces
 var player1, player2, player3, player4;
@@ -169,9 +179,8 @@ var shot;
 var wine;
 var ice;
 
-var colorArray = ["#FE7B62","#CB2DD3","#F1FD66","#004CE8","#FFD068", "#02A97E"];
-var color1, color2, color3, color4, color5, color6, color7, color8, color9, color10;
-var displayColor, wheel, data;
+var colorArray = ["#FE7B62","#CB2DD3","#FBB4ED","#F1FD66","#004CE8","#FFD068", "#02A97E"];
+var displayColor;
 var counter = 0;
 
 
@@ -215,7 +224,6 @@ function handleComplete(event) {
     titleView.addChild(main, startB, credits);
 	
     stage.addChild(titleView);
-
     stage.update();
 }
 
@@ -240,7 +248,6 @@ function handleComplete(event) {
 // }
 
 function loadBoard() {
-
     createjs.Ticker.addEventListener("tick", handleTick);
     createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
 
@@ -251,7 +258,6 @@ function loadBoard() {
     player1 = new createjs.Bitmap(queue.getResult("player1"));
     player1.scaleX = 0.25;
     player1.scaleY = 0.25;
-    player1.x = 70;
     player1.y = 500;
     player1.shadow = new createjs.Shadow("#000000", 5, 5, 5);
 
@@ -271,40 +277,31 @@ function loadBoard() {
     stage.removeAllChildren(titleView);
     stage.addChild(board);
 
-    // createjs.Tween.get(player1)
-    //     .to(pointArray[0], 1000, createjs.Ease.elasticIn)
-        // .call(pauseTicker);
-
-    stage.update();
+    createjs.Tween.get(player1)
+        .wait(500)
+        .to(pointArray[0], 1000, createjs.Ease.elasticIn);
 }
 
 function handleTick() {
     stage.update();
 }
 
-function pauseTicker() {
-    createjs.Ticker.setPaused(true);
-}
-
-function startTicker() {
-    createjs.Ticker.setPaused(false);
-}
-
 function pushButton() {
-
-    displayColor = setInterval(animateColor, 200);
-
-    }
+    animate = setInterval(animateColor, 200);
+}
 
 function animateColor() {
-    
     counter++;
     if (counter===20){
-        clearInterval(displayColor);
+        clearInterval(animate);
+        console.log(displayColor);
         counter=0;
     }
     square.graphics.clear();
-    square.graphics.beginFill(colorArray[parseInt(Math.random()*6)]).drawRoundRect(850, 50, 100, 100, 20);
-    stage.update();
+    displayColor = colorArray[parseInt(Math.random()*7)];
+    square.graphics.beginFill(displayColor).drawRoundRect(850, 50, 100, 100, 20);
+}
+
+function movePlayer() {
 
 }
