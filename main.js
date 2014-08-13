@@ -26,18 +26,18 @@ var pointArray = [{x:70, y:500},
     {x:150, y:500},
     {x:178, y:488},
     {x:193, y:465},
-    {x:205, y:440},
-    {x:228, y:418},
+    {x:203, y:440},
+    {x:225, y:420},
     {x:255, y:408},
     {x:286, y:405},
-    {x:317, y:410},
+    {x:315, y:410},
     {x:345, y:422},
-    {x:372, y:438},
-    {x:393, y:460},
+    {x:370, y:438},
+    {x:388, y:460},
     {x:413, y:482},
     {x:438, y:498},
     {x:467, y:508},
-    {x:498, y:510},
+    {x:495, y:510},
     {x:528, y:508},
     {x:558, y:505},
     {x:585, y:488},
@@ -63,7 +63,7 @@ var pointArray = [{x:70, y:500},
     {x:645, y:355},
     {x:647, y:325},
     {x:635, y:300},
-    {x:608, y:282},
+    {x:605, y:282},
     {x:578, y:284},
     {x:551, y:296},
     {x:520, y:305},
@@ -164,7 +164,7 @@ var pink = [pointArray[9],pointArray[20],pointArray[42],pointArray[69],pointArra
 var yellow = [pointArray[3],pointArray[10],pointArray[16],pointArray[23],pointArray[29],pointArray[35],pointArray[41],pointArray[48],pointArray[54],pointArray[60],pointArray[66],pointArray[73],pointArray[79],pointArray[85],pointArray[91],pointArray[98],pointArray[105],pointArray[111],pointArray[117],pointArray[123],pointArray[129]];
 var blue = [pointArray[4],pointArray[11],pointArray[17],pointArray[24],pointArray[30],pointArray[36],pointArray[43],pointArray[49],pointArray[55],pointArray[61],pointArray[67],pointArray[74],pointArray[80],pointArray[86],pointArray[93],pointArray[99],pointArray[106],pointArray[113],pointArray[119],pointArray[124],pointArray[130]];
 var gold = [pointArray[5],pointArray[12],pointArray[18],pointArray[25],pointArray[31],pointArray[37],pointArray[44],pointArray[50],pointArray[56],pointArray[62],pointArray[68],pointArray[75],pointArray[81],pointArray[87],pointArray[94],pointArray[100],pointArray[107],pointArray[114],pointArray[120],pointArray[125],pointArray[131]];
-var turquoise = [pointArray[6],pointArray[13],pointArray[19],pointArray[26],pointArray[32],pointArray[38],pointArray[45],pointArray[51],pointArray[57],pointArray[63],pointArray[70],pointArray[76],pointArray[82],pointArray[88],pointArray[95],pointArray[101],pointArray[108],pointArray[115],pointArray[121],pointArray[126],pointArray[132]];
+var green = [pointArray[6],pointArray[13],pointArray[19],pointArray[26],pointArray[32],pointArray[38],pointArray[45],pointArray[51],pointArray[57],pointArray[63],pointArray[70],pointArray[76],pointArray[82],pointArray[88],pointArray[95],pointArray[101],pointArray[108],pointArray[115],pointArray[121],pointArray[126],pointArray[132]];
 
 // Game pieces
 var player1, player2, player3, player4;
@@ -332,7 +332,7 @@ function translateColor() {
             findPoint(gold);
             break;
         case "#02A97E":
-            findPoint(turquoise);
+            findPoint(green);
             break;
         default:
             console.log("Not a real color.");
@@ -348,21 +348,40 @@ for (var i=0; i < pointArray.length; i++) {
     }
 }
 var m = currentPos + 1;
-var breakCheck1;
+var breakCheck;
 for(m;m<pointArray.length; m++) {
     for(var n=0;n<color.length; n++){
         if (color[n].x === pointArray[m].x && color[n].y === pointArray[m].y) {
-            breakCheck1= true;
             dest = n;
+            breakCheck = true;
             break;
-        } else {console.log("This loop ran but didn't catch");}
-    if (breakCheck1) {break;}
+        }
+    if (breakCheck) {break;}
     }
+if (breakCheck) {break;}
 }
 
-createjs.Tween.get(player1)
+movePlayer(color, currentPos, dest);
+
+return;
+
+}
+
+function movePlayer(color, currentPosition, destination) {
+
+if(currentPos > 127 && currentPos < 134) {
+    createjs.Tween.get(player1)
+    .wait(500)
+    .to(pointArray[134], 1000, createjs.Ease.bounceIn);
+} else if (currentPos===5) {
+    createjs.Tween.get(player1)
+    .wait(500)
+    .to(purple[9], 1000, createjs.Ease.bounceIn);
+} else {
+    createjs.Tween.get(player1)
     .wait(500)
     .to({x:color[dest].x,y:color[dest].y}, 1000, createjs.Ease.quadIn);
+}
 
 }
 
