@@ -182,6 +182,9 @@ var ice;
 var colorArray = ["#FE7B62","#CB2DD3","#FBB4ED","#F1FD66","#004CE8","#FFD068", "#02A97E"];
 var displayColor;
 var counter = 0;
+// var i=0, j=0, m=0, n=0;
+var currentPos, dest;
+var match;
 var timer = false;
 
 
@@ -299,55 +302,76 @@ function animateColor() {
     displayColor = colorArray[Math.floor(Math.random()*colorArray.length)];
     square.graphics.beginFill(displayColor).drawRoundRect(850, 50, 100, 100, 20);
     counter++;
-    console.log(counter);
-    if (counter===15){
+    if (counter===15) {
         clearInterval(animate);
         counter=0;
-        movePlayer(displayColor);
+        translateColor(displayColor);
         timer = false;
         return;
     }
 }
 
-function movePlayer() {
+function translateColor() {
     switch (displayColor) {
         case "#FE7B62":
-            createjs.Tween.get(player1)
-            .wait(500)
-            .to(orange[0], 1000, createjs.Ease.quadIn);
+            findPoint(orange);
             break;
         case "#CB2DD3":
-            createjs.Tween.get(player1)
-            .wait(500)
-            .to(purple[0], 1000, createjs.Ease.quadIn);
+            findPoint(purple);
             break;
         case "#FBB4ED":
-            createjs.Tween.get(player1)
-            .wait(500)
-            .to(pink[0], 1000, createjs.Ease.quadIn);
+            findPoint(pink);
             break;
         case "#F1FD66":
-            createjs.Tween.get(player1)
-            .wait(500)
-            .to(yellow[0], 1000, createjs.Ease.quadIn);
+            findPoint(yellow);
             break;
         case "#004CE8":
-            createjs.Tween.get(player1)
-            .wait(500)
-            .to(blue[0], 1000, createjs.Ease.quadIn);
+            findPoint(blue);
             break;
         case "#FFD068":
-            createjs.Tween.get(player1)
-            .wait(500)
-            .to(gold[0], 1000, createjs.Ease.quadIn);
+            findPoint(gold);
             break;
         case "#02A97E":
-            createjs.Tween.get(player1)
-            .wait(500)
-            .to(turquoise[0], 1000, createjs.Ease.quadIn);
+            findPoint(turquoise);
             break;
         default:
-            console.log("Not a real color");
+            console.log("Not a real color.");
     }
+}
+
+function findPoint(color) {
+
+for (var i=0; i < pointArray.length; i++) {
+    if (player1.x === pointArray[i].x && player1.y === pointArray[i].y) {
+        currentPos = i;
+        break;
+    }
+}
+console.log("currentPos is " + currentPos);
+var m = currentPos + 1;
+
+for(m; m<pointArray.length; m++) {
+    for(var n=0; n<color.length; n++){
+        if (color[n].x === pointArray[m].x && color[n].y === pointArray[m].y) {
+            console.log("color[n].x is " + color[n].x);
+            console.log("color[n].y is " + color[n].y);
+            console.log("pointArray[m].x is " + pointArray[m].x);
+            console.log("pointArray[m].y is " + pointArray[m].y);
+            dest = n;
+            break;   
+        }
+    break;
+    }
+}
+
+console.log("n is " + n);
+
+createjs.Tween.get(player1)
+    .wait(500)
+    .to({x:color[dest].x,y:color[dest].y}, 1000, createjs.Ease.quadIn);
+
+return;
 
 }
+
+
