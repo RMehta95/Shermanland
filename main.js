@@ -182,6 +182,7 @@ var ice;
 var colorArray = ["#FE7B62","#CB2DD3","#FBB4ED","#F1FD66","#004CE8","#FFD068", "#02A97E"];
 var displayColor;
 var counter = 0;
+var timer = false;
 
 
 function init() {
@@ -216,8 +217,8 @@ function handleComplete(event) {
     startB.y = 100;
     startB.x = 100;
     startB.addEventListener("click",loadBoard);
-    credits = new createjs.Text("Created by Rohan Mehta ©2014", "14px Arial", "#fff");
-    credits.x = 750;
+    credits = new createjs.Text("©2014 Sherman Ave. Created by Rohan Mehta.", "14px Arial", "#fff");
+    credits.x = 650;
     credits.y = 550;
 
     titleView = new createjs.Container();
@@ -287,21 +288,66 @@ function handleTick() {
 }
 
 function pushButton() {
-    animate = setInterval(animateColor, 200);
+    if (timer === false) {
+        animate = setInterval(animateColor, 200);
+        timer = true;
+    }
 }
 
 function animateColor() {
-    counter++;
-    if (counter===20){
-        clearInterval(animate);
-        console.log(displayColor);
-        counter=0;
-    }
     square.graphics.clear();
-    displayColor = colorArray[parseInt(Math.random()*7)];
+    displayColor = colorArray[Math.floor(Math.random()*colorArray.length)];
     square.graphics.beginFill(displayColor).drawRoundRect(850, 50, 100, 100, 20);
+    counter++;
+    console.log(counter);
+    if (counter===15){
+        clearInterval(animate);
+        counter=0;
+        movePlayer(displayColor);
+        timer = false;
+        return;
+    }
 }
 
 function movePlayer() {
+    switch (displayColor) {
+        case "#FE7B62":
+            createjs.Tween.get(player1)
+            .wait(500)
+            .to(orange[0], 1000, createjs.Ease.quadIn);
+            break;
+        case "#CB2DD3":
+            createjs.Tween.get(player1)
+            .wait(500)
+            .to(purple[0], 1000, createjs.Ease.quadIn);
+            break;
+        case "#FBB4ED":
+            createjs.Tween.get(player1)
+            .wait(500)
+            .to(pink[0], 1000, createjs.Ease.quadIn);
+            break;
+        case "#F1FD66":
+            createjs.Tween.get(player1)
+            .wait(500)
+            .to(yellow[0], 1000, createjs.Ease.quadIn);
+            break;
+        case "#004CE8":
+            createjs.Tween.get(player1)
+            .wait(500)
+            .to(blue[0], 1000, createjs.Ease.quadIn);
+            break;
+        case "#FFD068":
+            createjs.Tween.get(player1)
+            .wait(500)
+            .to(gold[0], 1000, createjs.Ease.quadIn);
+            break;
+        case "#02A97E":
+            createjs.Tween.get(player1)
+            .wait(500)
+            .to(turquoise[0], 1000, createjs.Ease.quadIn);
+            break;
+        default:
+            console.log("Not a real color");
+    }
 
 }
