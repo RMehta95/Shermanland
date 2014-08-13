@@ -347,30 +347,22 @@ for (var i=0; i < pointArray.length; i++) {
         break;
     }
 }
-console.log("currentPos is " + currentPos);
 var m = currentPos + 1;
-
-for(m; m<pointArray.length; m++) {
-    for(var n=0; n<color.length; n++){
+var breakCheck1;
+for(m;m<pointArray.length; m++) {
+    for(var n=0;n<color.length; n++){
         if (color[n].x === pointArray[m].x && color[n].y === pointArray[m].y) {
-            console.log("color[n].x is " + color[n].x);
-            console.log("color[n].y is " + color[n].y);
-            console.log("pointArray[m].x is " + pointArray[m].x);
-            console.log("pointArray[m].y is " + pointArray[m].y);
+            breakCheck1= true;
             dest = n;
-            break;   
-        }
-    break;
+            break;
+        } else {console.log("This loop ran but didn't catch");}
+    if (breakCheck1) {break;}
     }
 }
-
-console.log("n is " + n);
 
 createjs.Tween.get(player1)
     .wait(500)
     .to({x:color[dest].x,y:color[dest].y}, 1000, createjs.Ease.quadIn);
-
-return;
 
 }
 
