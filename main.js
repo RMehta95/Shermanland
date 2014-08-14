@@ -290,7 +290,7 @@ function handleTick() {
 }
 
 function pushButton() {
-    if (timer === false) {
+    if (timer === false && dest !== 134) {
         animate = setInterval(animateColor, 200);
         timer = true;
     }
