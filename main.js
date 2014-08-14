@@ -35,7 +35,7 @@ var pointArray = [{x:70, y:500},
     {x:370, y:438},
     {x:388, y:460},
     {x:411, y:482},
-    {x:438, y:498},
+    {x:436, y:498},
     {x:465, y:508},
     {x:495, y:510},
     {x:525, y:508},
@@ -43,8 +43,8 @@ var pointArray = [{x:70, y:500},
     {x:585, y:488},
     {x:593, y:460},
     {x:579, y:440},
-    {x:552, y:430},
-    {x:522, y:428},
+    {x:550, y:430},
+    {x:520, y:428},
     {x:490, y:430},
     {x:458, y:430},
     {x:427, y:425},
@@ -67,7 +67,7 @@ var pointArray = [{x:70, y:500},
     {x:578, y:284},
     {x:551, y:296},
     {x:520, y:305},
-    {x:490, y:303},
+    {x:488, y:303},
     {x:460, y:289},
     {x:434, y:273},
     {x:408, y:256},
@@ -76,7 +76,7 @@ var pointArray = [{x:70, y:500},
     {x:318, y:242},
     {x:288, y:252},
     {x:262, y:268},
-    {x:240, y:290},
+    {x:239, y:292},
     {x:220, y:318},
     {x:204, y:341},
     {x:185, y:362},
@@ -100,12 +100,12 @@ var pointArray = [{x:70, y:500},
     {x:150, y:208},
     {x:130, y:184},
     {x:132, y:153},
-    {x:155, y:134},
+    {x:153, y:134},
     {x:184, y:125},
     {x:214, y:128},
-    {x:244, y:135},
+    {x:242, y:135},
     {x:269, y:150},
-    {x:300, y:164},
+    {x:298, y:164},
     {x:328, y:180},
     {x:356, y:193},
     {x:384, y:208},
@@ -282,7 +282,7 @@ function loadBoard() {
 
     createjs.Tween.get(player1)
         .wait(1000)
-        .to(pointArray[0], 1000, createjs.Ease.elasticIn);
+        .to(pointArray[0], 2000, createjs.Ease.elasticIn);
 }
 
 function handleTick() {
@@ -356,7 +356,7 @@ var m = currentPos + 1;
 for(m;m<pointArray.length; m++) {
     for(var n=0;n<color.length; n++){
         if (color[n].x === pointArray[m].x && color[n].y === pointArray[m].y) {
-            dest = n;
+            dest = m;
             breakCheck2 = true;
             break;
         }
@@ -365,9 +365,7 @@ for(m;m<pointArray.length; m++) {
 if (breakCheck2) break;
 }
 
-console.log(breakCheck2);
 if (breakCheck2 === false) dest = 134;
-console.log(dest);
 movePlayer(color, currentPos, dest);
 
 return;
@@ -378,23 +376,38 @@ function movePlayer(color, currentPos, dest) {
 
 console.log(currentPos);
 console.log(dest);
-//current pos is not being stored correctly
-
-if(dest === 134) {
+if (dest===5) {
     createjs.Tween.get(player1)
-    .wait(500)
-    .to(pointArray[134], 2000, createjs.Ease.bounceIn);
-} else if (color===gold && dest===0) {
+        .wait(1000)
+        .to(pointArray[5], 1000, createjs.Ease.quadIn)
+        .wait(500)
+        .to(purple[9], 1000, createjs.Ease.bounceIn);
+} else if(dest === 134) {
     createjs.Tween.get(player1)
-    .wait(500)
-    .to(pointArray[5], 1000, createjs.Ease.quadIn)
-    .to(purple[9], 5000, createjs.Ease.bounceIn);
+        .wait(1000)
+        .to(pointArray[134], 1000, createjs.Ease.bounceIn);
 } else {
     createjs.Tween.get(player1)
-    .wait(500)
-    .to({x:color[dest].x,y:color[dest].y}, 2000, createjs.Ease.quadIn);
+        .wait(1000)
+        .to({x:pointArray[dest].x,y:pointArray[dest].y}, 1000, createjs.Ease.quadIn);
+}
+this.addEventListener("complete",drinkMessage(dest));
+return;
 }
 
-}
+function drinkMessage(dest) {
 
+if (dest===5) window.setTimeout(alert, 3000, "Woah, you're not getting off that easy. Double shot, no chaser.");
+else if (dest===6) window.setTimeout(alert, 3000, "Start off with some bacardi. Don't spill.");
+else if (dest===9) window.setTimeout(alert, 3000,"Let's see it, bartender. Gin on the rocks.");
+else if (dest===15 || dest===20 || dest ===22) window.setTimeout(alert, 3000, "Schnapps on schnapps.");
+else if (dest===28) window.setTimeout(alert, 3000,"Smirnoff. Treat yourself to something nice honey.");
+else if (dest===36 || dest===42) window.setTimeout(alert, 3000,"Take your pick. Skol or... skol.");
+else if (dest===49 || dest===53) window.setTimeout(alert, 3000,"Aye aye. Malibu or Captain Morgan, take your pick.");
+else if (dest===62 || dest===69 || dest===80 || dest===87) window.setTimeout(alert, 3000,"Yee ha, Tennessee whiskey time.");
+else if (dest===89 || dest===92) window.setTimeout(alert, 3000,"Schlapp da bag. 10 seconds minimum.");
+else if (dest===99 || dest===102 || dest===105) window.setTimeout(alert, 3000,"Salt, tequila, lime. Go.");
+else if (dest===115 || dest===127) window.setTimeout(alert, 3000,"Liquor before beer, and you're in the clear. Chug.");
+else if (dest===134) window.setTimeout(alert, 3000,"Keg standdddddd");
+}
 
