@@ -15,10 +15,8 @@ var selectPlayersView; // Screen to select number of players
 var playbutton1, playbutton2, playbutton3, playbutton4;
 var selectPlayers; // Container
 
-var bg; // Background graphic
-var board; // Container
-var square; // Color shape, rounded square
-var buttonListener; // Button listener
+var bg, board; // Background graphic & board container
+var square, squareHolder, questionMark; // Color shape, container, &question mark
 
 // Array of all spaces on track
 var pointArray = [{x:70, y:500},
@@ -185,12 +183,14 @@ var counter = 0;
 var currentPos, dest;
 var match;
 var timer = false;
+var playAgain;
 
 
 function init() {
     canvas = document.getElementById("canvas");
 
     stage = new createjs.Stage("canvas");
+    stage.enableMouseOver(20);
     queue = new createjs.LoadQueue(false);
 	//false allows images to load locally
     createjs.Touch.enable(stage);
@@ -198,7 +198,6 @@ function init() {
     queue.installPlugin(createjs.Sound);
     createjs.MotionGuidePlugin.install();
     queue.on("complete", handleComplete, this);
-    // queue.loadFile({id:"duckSauce", src:"BarbraStreisand.mp3"});
     queue.loadManifest([
     			{id:"main", src:"titleview2.jpg"},
     			{id:"startB", src:"startbutton.png"},
@@ -209,7 +208,7 @@ function init() {
                 {id:"playbutton4", src:"playbutton4.png"},
                 {id:"bgImg", src:"shermanlandboard.jpg"},
                 {id:"player1", src:"willie.png"},
-    			{id:"pushbutton", src:"pushbutton.png"},
+    			{id:"pushbutton", src:"pushbutton.png"}
                 {id:"duckSauce", src:"BarbraStreisand.mp3"}
     		]);
 
@@ -223,6 +222,7 @@ function handleComplete(event) {
     startB.y = 100;
     startB.x = 100;
     startB.addEventListener("click",requestPlayers);
+    startB.cursor = "pointer";
     credits = new createjs.Text("©2014 Sherman Ave. Created by Rohan Mehta.", "14px Arial", "#fff");
     credits.x = 650;
     credits.y = 550;
@@ -238,12 +238,16 @@ function requestPlayers(event) {
     selectPlayersView = new createjs.Bitmap(queue.getResult("selectPlayersView"));
     playbutton1 = new createjs.Bitmap(queue.getResult("playbutton1"));
     playbutton1.x = 100;
+    playbutton1.cursor = "pointer";
     playbutton2 = new createjs.Bitmap(queue.getResult("playbutton2"));
     playbutton2.x = 100;
+    playbutton2.cursor = "pointer";
     playbutton3 = new createjs.Bitmap(queue.getResult("playbutton3"));
     playbutton3.x = 100;
+    playbutton3.cursor = "pointer";
     playbutton4 = new createjs.Bitmap(queue.getResult("playbutton4"));
     playbutton4.x = 100;
+    playbutton4.cursor = "pointer";
     
     selectPlayers = new createjs.Container();
     selectPlayers.addChild(selectPlayersView, playbutton1, playbutton2, playbutton3, playbutton4);
@@ -278,10 +282,19 @@ function loadBoard() {
     pushbutton.scaleY = 0.4;
     pushbutton.x = 840;
     pushbutton.y = 300;
+    pushbutton.cursor = "pointer";
     pushbutton.on("click",pushButton);
 
     square = new createjs.Shape();
     square.graphics.beginFill("#000").drawRoundRect(850, 50, 100, 100, 20);
+    
+    questionMark = new createjs.Text("?", "64px Verdana", "#FFF");
+    questionMark.x = 883;
+    questionMark.y = 68;
+
+    squareHolder = new createjs.Container();
+    squareHolder.addChild(square,questionMark);
+
 
     instructions = new createjs.Text("Push to Move", "24px Impact", "#000");
     instructions.x = 835;
@@ -289,14 +302,14 @@ function loadBoard() {
 
 
     board = new createjs.Container();
-    board.addChild(bg, player1, pushbutton, square, instructions);
+    board.addChild(bg, player1, pushbutton, squareHolder, instructions);
     
     stage.removeAllChildren(titleView);
     stage.addChild(board);
 
     createjs.Tween.get(player1)
         .wait(1000)
-        .to(pointArray[0], 2000, createjs.Ease.elasticIn);
+        .to(pointArray[130], 2000, createjs.Ease.elasticIn);
 }
 
 function handleTick() {
@@ -311,6 +324,7 @@ function pushButton() {
 }
 
 function animateColor() {
+    squareHolder.removeChild(questionMark);
     square.graphics.clear();
     displayColor = colorArray[Math.floor(Math.random()*colorArray.length)];
     square.graphics.beginFill(displayColor).drawRoundRect(850, 50, 100, 100, 20);
@@ -406,6 +420,7 @@ if (dest===5) {
 this.addEventListener("complete",drinkMessage(dest));
 }
 
+
 function drinkMessage(dest) {
 
 if (dest===5) window.setTimeout(alert, 5000, "Woah, you're not getting off that easy. Double shot, no chaser.");
@@ -417,9 +432,16 @@ else if (dest===36 || dest===42) window.setTimeout(alert, 3000,"Take your pick. 
 else if (dest===49 || dest===53) window.setTimeout(alert, 3000,"Aye aye. Malibu or Captain Morgan, take your pick.");
 else if (dest===62 || dest===69 || dest===80 || dest===87) window.setTimeout(alert, 3000,"Yee-ha, Tennessee whiskey time.");
 else if (dest===89 || dest===92) window.setTimeout(alert, 3000,"Schlapp da bag. 10 seconds minimum.");
-else if (dest===99 || dest===102 || dest===105) window.setTimeout(alert, 3000,"Salt, tequila, lime. Go.");
+else if (dest===99 || dest===102 || dest===107) window.setTimeout(alert, 3000,"Salt, tequila, lime. Go.");
 else if (dest===117 || dest===129) window.setTimeout(alert, 3000,"Liquor before beer, and you're in the clear. Chug.");
-else if (dest===134) window.setTimeout(alert, 3000,"If you're stillllll alive, 20 second keg standdddddd.");
+else if (dest===134) window.setTimeout(alert, 3000, "If you're stilll alive, 20 second keg standdddddd.");
+}
 
+
+function reset() {
+
+createjs.Tween.get(player1)
+    .wait(1000)
+    .to(pointArray[0], 2000, createjs.Ease.circIn);
 }
 
