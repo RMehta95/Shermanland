@@ -309,7 +309,7 @@ function loadBoard() {
 
     createjs.Tween.get(player1)
         .wait(1000)
-        .to(pointArray[0], 2000, createjs.Ease.elasticIn);
+        .to(pointArray[130], 2000, createjs.Ease.elasticIn);
 }
 
 function handleTick() {
@@ -434,9 +434,15 @@ else if (dest===62 || dest===69 || dest===80 || dest===87) window.setTimeout(ale
 else if (dest===89 || dest===92) window.setTimeout(alert, 3000,"Schlapp da bag. 10 seconds minimum.");
 else if (dest===99 || dest===102 || dest===107) window.setTimeout(alert, 3000,"Salt, tequila, lime. Go.");
 else if (dest===117 || dest===129) window.setTimeout(alert, 3000,"Liquor before beer, and you're in the clear. Chug.");
-else if (dest===134) window.setTimeout(alert, 3000, "If you're stilll alive, 20 second keg standdddddd.");
+else if (dest===134) {
+    window.setTimeout(alert, 3000, "If you're stilll alive, 20 second keg standdddddd.");
+    window.setTimeout(confirmReset, 5000);
+}
 }
 
+function confirmReset() {
+    if(confirm("Game over. Do you want to play again?")) reset();
+}
 
 function reset() {
 
