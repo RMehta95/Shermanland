@@ -423,20 +423,20 @@ this.addEventListener("complete",drinkMessage(dest));
 
 function drinkMessage(dest) {
 
-if (dest===5) window.setTimeout(alert, 5000, "Woah, you're not getting off that easy. Double shot, no chaser.");
-else if (dest===6) window.setTimeout(alert, 3000, "Start off with some bacardi. Don't spill.");
-else if (dest===9) window.setTimeout(alert, 3000,"Let's see it, bartender. Gin on the rocks.");
-else if (dest===15 || dest===20 || dest ===22) window.setTimeout(alert, 3000, "Schnapps on schnapps.");
-else if (dest===28) window.setTimeout(alert, 3000,"Smirnoff. Treat yourself to something nice honey.");
-else if (dest===36 || dest===42) window.setTimeout(alert, 3000,"Take your pick. Skol or... skol.");
-else if (dest===49 || dest===53) window.setTimeout(alert, 3000,"Aye aye. Malibu or Captain Morgan, take your pick.");
-else if (dest===62 || dest===69 || dest===80 || dest===87) window.setTimeout(alert, 3000,"Yee-ha, Tennessee whiskey time.");
-else if (dest===89 || dest===92) window.setTimeout(alert, 3000,"Schlapp da bag. 10 seconds minimum.");
-else if (dest===99 || dest===102 || dest===107) window.setTimeout(alert, 3000,"Salt, tequila, lime. Go.");
-else if (dest===117 || dest===129) window.setTimeout(alert, 3000,"Liquor before beer, and you're in the clear. Chug.");
+if (dest===5) setTimeout(alert, 5000, "Woah, you're not getting off that easy. Double shot, no chaser.");
+else if (dest===6) setTimeout(alert, 3000, "Start off with some bacardi. Don't spill.");
+else if (dest===9) setTimeout(alert, 3000,"Let's see it, bartender. Gin on the rocks.");
+else if (dest===15 || dest===20 || dest ===22) setTimeout(alert, 3000, "Schnapps on schnapps.");
+else if (dest===28) setTimeout(alert, 3000,"Smirnoff. Treat yourself to something nice honey.");
+else if (dest===36 || dest===42) setTimeout(alert, 3000,"Take your pick. Skol or... skol.");
+else if (dest===49 || dest===53) setTimeout(alert, 3000,"Aye aye. Malibu or Captain Morgan, take your pick.");
+else if (dest===62 || dest===69 || dest===80 || dest===87) setTimeout(alert, 3000,"Yee-ha, Tennessee whiskey time.");
+else if (dest===89 || dest===92) setTimeout(alert, 3000,"Schlapp da bag. 10 seconds minimum.");
+else if (dest===99 || dest===102 || dest===107) setTimeout(alert, 3000,"Salt, tequila, lime. Go.");
+else if (dest===117 || dest===129) setTimeout(alert, 3000,"Liquor before beer, and you're in the clear. Chug.");
 else if (dest===134) {
-    window.setTimeout(alert, 3000, "If you're stilll alive, 20 second keg standdddddd.");
-    window.setTimeout(confirmReset, 5000);
+    setTimeout(alert, 3000, "If you're stilll alive, 20 second keg standdddddd.");
+    setTimeout(confirmReset, 5000);
 }
 }
 
