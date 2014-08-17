@@ -208,7 +208,7 @@ function init() {
                 {id:"playbutton4", src:"playbutton4.png"},
                 {id:"bgImg", src:"shermanlandboard.jpg"},
                 {id:"player1", src:"willie.png"},
-    			{id:"pushbutton", src:"pushbutton.png"}
+    			{id:"pushbutton", src:"pushbutton.png"},
                 {id:"duckSauce", src:"BarbraStreisand.mp3"}
     		]);
 
