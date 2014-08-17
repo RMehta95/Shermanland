@@ -309,7 +309,7 @@ function loadBoard() {
 
     createjs.Tween.get(player1)
         .wait(1000)
-        .to(pointArray[130], 2000, createjs.Ease.elasticIn);
+        .to(pointArray[0], 2000, createjs.Ease.elasticIn);
 }
 
 function handleTick() {
